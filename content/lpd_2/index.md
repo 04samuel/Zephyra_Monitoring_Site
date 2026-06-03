@@ -10,7 +10,7 @@ slug = "lpd2"
 </style>
 <div id="zephyra-params" style="margin-bottom:2rem;"></div>
 <script>
-fetch('/data/MDV_1_Current_Zephyra_Parameters.json')
+fetch('/data/LPD_2_Current_Zephyra_Parameters.json')
   .then(r => r.json())
   .then(d => {
     const rows = [
@@ -50,7 +50,7 @@ fetch('/data/MDV_1_Current_Zephyra_Parameters.json')
 </style>
 
 <script>
-fetch('/data/MDV_1_Current_Lidar_Parameters.json')
+fetch('/data/LPD_2_Current_Lidar_Parameters.json')
   .then(r => r.json())
   .then(d => {
     const filename = d.Event_File.split('/').pop();
