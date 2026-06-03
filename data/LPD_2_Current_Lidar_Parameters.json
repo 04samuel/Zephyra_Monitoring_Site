@@ -1,0 +1,21 @@
+{
+    "station": "LPD_2",
+    "source_log": "LPD_2_2026-06-02__19-17-37_log.txt",
+    "timestamp": "02-06-2026 19:17:37",
+    "Frequency": 5.0,
+    "HTS_num": 7.0,
+    "HTS_len_seconds": 1800.0,
+    "HTS_len_hours": 0.5,
+    "LTS_short_len_seconds": 5.0,
+    "LTS_long_len_seconds": 60.0,
+    "LTS_long_len_minutes": 1.0,
+    "HTS_total_hours": 3.5,
+    "LTS_Long_Folder_Path": "/mnt/SSD/LTS",
+    "LTS_Short_Folder_Path": "/mnt/SSD/LTS_Short",
+    "HTS_Folder_Path": "/mnt/SSD/HTS",
+    "Lidar_Logs_Folder_Path": "/mnt/SSD/Lidar_Logs",
+    "Event_Schedule_Folder_Path": "/opt/remotestation/scripts/Events",
+    "Event_File": "/opt/remotestation/scripts/Events/Fares_HBR_Tides-2h30.csv",
+    "Timezone": "UTC",
+    "_tzinfo": "UTC"
+}
