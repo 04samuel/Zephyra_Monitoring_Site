@@ -4,6 +4,9 @@ menu = "main"
 slug = "lpd2"
 +++
 
+## LPD_2 Currently No Lidar Connected
+## Testing on 6 East Roof
+
 ### Current Zephyra Parameters:
 <style>
 #zephyra-params table, #zephyra-params td { border: none; box-shadow: none; }
@@ -81,9 +84,6 @@ fetch('/data/LPD_2_Current_Lidar_Parameters.json')
   });
 </script>
 
-
-## LPD_2 Currently No Lidar Connected
-## Testing on 6 East Roof
 
 ### 30‑Day Summary
 ![30 Day Graph](images/LPD_2_30_Day.svg)
