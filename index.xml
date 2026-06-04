@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Zephyra Control</title><link>https://zephyra-control.com/</link><description>Recent content on Zephyra Control</description><generator>Hugo</generator><language>en</language><atom:link href="https://zephyra-control.com/index.xml" rel="self" type="application/rss+xml"/><item><title>LPD 2</title><link>https://zephyra-control.com/lpd2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://zephyra-control.com/lpd2/</guid><description>&lt;h3 id="current-zephyra-parameters"&gt;Current Zephyra Parameters:&lt;/h3&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;h3 id="current-lidar-parameters"&gt;Current Lidar Parameters:&lt;/h3&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;h2 id="lpd_2-currently-no-lidar-connected"&gt;LPD_2 Currently No Lidar Connected&lt;/h2&gt;
-&lt;h2 id="testing-on-6-east-roof"&gt;Testing on 6 East Roof&lt;/h2&gt;
-&lt;h3 id="30day-summary"&gt;30‑Day Summary&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="30 Day Graph" loading="lazy" src="https://zephyra-control.com/lpd2/images/LPD_2_30_Day.svg"&gt;&lt;/p&gt;
-&lt;h3 id="5day-summary"&gt;5‑Day Summary&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="5 Day Graph" loading="lazy" src="https://zephyra-control.com/lpd2/images/LPD_2_5_Day.svg"&gt;&lt;/p&gt;
-&lt;h3 id="lidar-parameters"&gt;Lidar Parameters&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="30 Day Summary" loading="lazy" src="https://zephyra-control.com/lpd2/images/LPD_2_Lidar_ScanParameters.svg"&gt;&lt;/p&gt;</description></item><item><title>MDV 1</title><link>https://zephyra-control.com/mdv1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://zephyra-control.com/mdv1/</guid><description>&lt;h3 id="30day-summary"&gt;30‑Day Summary&lt;/h3&gt;
+&lt;style&gt;
+#zephyra-params table, #zephyra-params td { border: none; box-shadow: none; }
+&lt;/style&gt;
+&lt;div id="zephyra-params" style="margin-bottom:2rem;"&gt;&lt;/div&gt;
+&lt;script&gt;
+fetch('/data/LPD_2_Current_Zephyra_Parameters.json')
+.then(r =&gt; r.json())
+.then(d =&gt; {
+const rows = [
+['Station', d.station],
+['Last Updated', (d.timestamp) + ' UTC'],
+['All Event Time Adjustment', (d.AllEventTimeAdjustmentSec / 60) + ' min'],
+['LTS Time Adjustment', (d.Event0TimeAdjustmentSec / 60) + ' min'],
+['HTS Time Adjustment', (d.Event1TimeAdjustmentSec / 60) + ' min'],
+['LTS Duration', (d.Event0WaitTime / 60) + ' min'],
+['HTS Duration', (d.Event1WaitTime / 60) + ' min'],
+['Time Set Duration', (d.Event2WaitTime / 60) + ' min'],
+['Battery Stop Limit', d.BatteryLimitStop + '%'],
+['Battery Start Limit', d.BatteryLimitStart + '%'],
+['Battery Saver Switch', d.BatteryLimitSwitch === 1 ? 'On' : 'Off'],
+];
+const html = `
+&lt;table style="width:100%;max-width:560px;font-size:0.9rem;"&gt;
+${rows.map(([label, val]) =&gt; `
+&lt;tr&gt;
+&lt;td style="padding:6px 12px 6px 0;font-weight:600;white-space:nowrap;opacity:0.7;"&gt;${label}&lt;/td&gt;
+&lt;td style="padding:6px 0;"&gt;${val}&lt;/td&gt;
+&lt;/tr&gt;`).join('')}
+&lt;/table&gt;`;
+document.getElementById('zephyra-params').innerHTML = html;
+})
+.catch(() =&gt; {
+document.getElementById('zephyra-params').innerHTML = '&lt;p style="opacity:0.5;"&gt;Could not load Zephyra parameters.&lt;/p&gt;</description></item><item><title>MDV 1</title><link>https://zephyra-control.com/mdv1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://zephyra-control.com/mdv1/</guid><description>&lt;h3 id="30day-summary"&gt;30‑Day Summary&lt;/h3&gt;
 &lt;p&gt;&lt;img alt="30 Day Graph" loading="lazy" src="https://zephyra-control.com/mdv1/images/MDV_1_30_Day.svg"&gt;&lt;/p&gt;
 &lt;h3 id="5day-summary"&gt;5‑Day Summary&lt;/h3&gt;
 &lt;p&gt;&lt;img alt="5 Day Graph" loading="lazy" src="https://zephyra-control.com/mdv1/images/MDV_1_5_Day.svg"&gt;&lt;/p&gt;
