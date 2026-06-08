@@ -16,8 +16,8 @@ updateClock();
 setInterval(updateClock, 1000);
 </script>
 
-##LPD_2 Currently No Lidar Connected
-##Testing on 6 East Roof
+## LPD_2 Currently No Lidar Connected
+## Testing on 6 East Roof
 
 ### Zephyra Error Log (Last 30 Days):
 <style>
