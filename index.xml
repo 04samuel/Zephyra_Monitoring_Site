@@ -9,8 +9,8 @@ document.getElementById('utc-clock').textContent = `Current Time: ${hh}:${mm} UT
 updateClock();
 setInterval(updateClock, 1000);
 &lt;/script&gt;
-&lt;p&gt;##LPD_2 Currently No Lidar Connected
-##Testing on 6 East Roof&lt;/p&gt;
+&lt;h2 id="lpd_2-currently-no-lidar-connected"&gt;LPD_2 Currently No Lidar Connected&lt;/h2&gt;
+&lt;h2 id="testing-on-6-east-roof"&gt;Testing on 6 East Roof&lt;/h2&gt;
 &lt;h3 id="zephyra-error-log-last-30-days"&gt;Zephyra Error Log (Last 30 Days):&lt;/h3&gt;
 &lt;style&gt;
 #error-log table, #error-log td, #error-log th { border: none; box-shadow: none; }
