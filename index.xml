@@ -1,39 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Zephyra Control</title><link>https://zephyra-control.com/</link><description>Recent content on Zephyra Control</description><generator>Hugo</generator><language>en</language><atom:link href="https://zephyra-control.com/index.xml" rel="self" type="application/rss+xml"/><item><title>LPD 2</title><link>https://zephyra-control.com/lpd2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://zephyra-control.com/lpd2/</guid><description>&lt;h2 id="lpd_2-currently-no-lidar-connected"&gt;LPD_2 Currently No Lidar Connected&lt;/h2&gt;
-&lt;h2 id="testing-on-6-east-roof"&gt;Testing on 6 East Roof&lt;/h2&gt;
-&lt;h3 id="current-zephyra-parameters"&gt;Current Zephyra Parameters:&lt;/h3&gt;
-&lt;style&gt;
-#zephyra-params table, #zephyra-params td { border: none; box-shadow: none; }
-&lt;/style&gt;
-&lt;div id="zephyra-params" style="margin-bottom:2rem;"&gt;&lt;/div&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Zephyra Control</title><link>https://zephyra-control.com/</link><description>Recent content on Zephyra Control</description><generator>Hugo</generator><language>en</language><atom:link href="https://zephyra-control.com/index.xml" rel="self" type="application/rss+xml"/><item><title>LPD 2</title><link>https://zephyra-control.com/lpd2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://zephyra-control.com/lpd2/</guid><description>&lt;p id="utc-clock" style="font-size:0.9em;opacity:0.6;margin-bottom:2rem;"&gt;&lt;/p&gt;
 &lt;script&gt;
-fetch('/data/LPD_2_Current_Zephyra_Parameters.json')
-.then(r =&gt; r.json())
-.then(d =&gt; {
-const rows = [
-['Station', d.station],
-['Last Updated', (d.timestamp) + ' UTC'],
-['All Event Time Adjustment', (d.AllEventTimeAdjustmentSec / 60) + ' min'],
-['LTS Time Adjustment', (d.Event0TimeAdjustmentSec / 60) + ' min'],
-['HTS Time Adjustment', (d.Event1TimeAdjustmentSec / 60) + ' min'],
-['LTS Duration', (d.Event0WaitTime / 60) + ' min'],
-['HTS Duration', (d.Event1WaitTime / 60) + ' min'],
-['Time Set Duration', (d.Event2WaitTime / 60) + ' min'],
-['Battery Stop Limit', d.BatteryLimitStop + '%'],
-['Battery Start Limit', d.BatteryLimitStart + '%'],
-['Battery Saver Switch', d.BatteryLimitSwitch === 1 ? 'On' : 'Off'],
-];
-const html = `
-&lt;table style="width:100%;max-width:560px;font-size:0.9rem;"&gt;
-${rows.map(([label, val]) =&gt; `
-&lt;tr&gt;
-&lt;td style="padding:6px 12px 6px 0;font-weight:600;white-space:nowrap;opacity:0.7;"&gt;${label}&lt;/td&gt;
-&lt;td style="padding:6px 0;"&gt;${val}&lt;/td&gt;
-&lt;/tr&gt;`).join('')}
-&lt;/table&gt;`;
-document.getElementById('zephyra-params').innerHTML = html;
-})
-.catch(() =&gt; {
-document.getElementById('zephyra-params').innerHTML = '&lt;p style="opacity:0.5;"&gt;Could not load Zephyra parameters.&lt;/p&gt;</description></item><item><title>MDV 1</title><link>https://zephyra-control.com/mdv1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://zephyra-control.com/mdv1/</guid><description>&lt;h3 id="30day-summary"&gt;30‑Day Summary&lt;/h3&gt;
+function updateClock() {
+const now = new Date();
+const hh = String(now.getUTCHours()).padStart(2, '0');
+const mm = String(now.getUTCMinutes()).padStart(2, '0');
+document.getElementById('utc-clock').textContent = `Current Time: ${hh}:${mm} UTC`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+&lt;/script&gt;
+&lt;p&gt;##LPD_2 Currently No Lidar Connected
+##Testing on 6 East Roof&lt;/p&gt;
+&lt;h3 id="zephyra-error-log-last-30-days"&gt;Zephyra Error Log (Last 30 Days):&lt;/h3&gt;
+&lt;style&gt;
+#error-log table, #error-log td, #error-log th { border: none; box-shadow: none; }
+#error-log th { text-align: left; padding-right: 2rem; opacity: 0.6; font-size: 0.85em; }
+#error-log td { padding-right: 2rem; vertical-align: top; }
+&lt;/style&gt;
+&lt;div id="error-log" style="margin-bottom:2rem;"&gt;&lt;/div&gt;
+&lt;script&gt;
+function formatTimestamp(ts) {
+const parts = ts.trim().split(' ');
+const dateParts = parts[0].split('-');
+const time = parts[1].substring(0, 5);
+return `${time} ${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+}
+fetch('/data/LPD_2_Combined_Zephyra_Log_Error.csv')
+.then(r =&gt; r.text())
+.then(text =&gt; {
+const lines = text.trim().split('\n');
+const headers = lines[0].replace(/\r/g, '').replace(/"/g, '').split(',');
+const tsIdx = headers.indexOf('timestamp');
+const daysIdx = headers.indexOf('days_ago');
+const descIdx = headers.indexOf('description');
+const rows = lines.slice(1).map(l =&gt; l.replace(/\r/g, '').replace(/"/g, '').split(','));
+const filtered = rows.filter(r =&gt; parseFloat(r[daysIdx]) &lt;= 30);
+const tooMany = filtered.length &gt; 10;
+const recent = tooMany ? filtered.slice(-10) : filtered;
+const display = recent.length &gt; 0 ? recent : [rows[rows.length - 1]];
+const label = recent.length &gt; 0
+? 'Errors (last 30 days)'
+: 'No errors in last 30 days - showing most recent:';
+let html = `&lt;p style="margin-bottom:0.5rem;font-size:0.9em;opacity:0.7;"&gt;${label}&lt;/p&gt;</description></item><item><title>MDV 1</title><link>https://zephyra-control.com/mdv1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://zephyra-control.com/mdv1/</guid><description>&lt;h3 id="30day-summary"&gt;30‑Day Summary&lt;/h3&gt;
 &lt;p&gt;&lt;img alt="30 Day Graph" loading="lazy" src="https://zephyra-control.com/mdv1/images/MDV_1_30_Day.svg"&gt;&lt;/p&gt;
 &lt;h3 id="5day-summary"&gt;5‑Day Summary&lt;/h3&gt;
 &lt;p&gt;&lt;img alt="5 Day Graph" loading="lazy" src="https://zephyra-control.com/mdv1/images/MDV_1_5_Day.svg"&gt;&lt;/p&gt;
