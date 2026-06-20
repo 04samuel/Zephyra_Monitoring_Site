@@ -41,18 +41,88 @@ const display = recent.length &gt; 0 ? recent : [rows[rows.length - 1]];
 const label = recent.length &gt; 0
 ? 'Errors (last 30 days)'
 : 'No errors in last 30 days - showing most recent:';
-let html = `&lt;p style="margin-bottom:0.5rem;font-size:0.9em;opacity:0.7;"&gt;${label}&lt;/p&gt;</description></item><item><title>MDV 1</title><link>https://zephyra-control.com/mdv1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://zephyra-control.com/mdv1/</guid><description>&lt;h3 id="30day-summary"&gt;30‑Day Summary&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="30 Day Graph" loading="lazy" src="https://zephyra-control.com/mdv1/images/MDV_1_30_Day.svg"&gt;&lt;/p&gt;
-&lt;h3 id="5day-summary"&gt;5‑Day Summary&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="5 Day Graph" loading="lazy" src="https://zephyra-control.com/mdv1/images/MDV_1_5_Day.svg"&gt;&lt;/p&gt;
-&lt;h3 id="lidar-parameters"&gt;Lidar Parameters&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="30 Day Summary" loading="lazy" src="https://zephyra-control.com/mdv1/images/MDV_1_Lidar_ScanParameters.svg"&gt;&lt;/p&gt;
-&lt;h3 id="zephyra-parameters"&gt;Zephyra Parameters&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="5 Day Summary" loading="lazy" src="https://zephyra-control.com/mdv1/images/MDV_1_Zephyra_Parameters.svg"&gt;&lt;/p&gt;</description></item><item><title>MDV 2</title><link>https://zephyra-control.com/mdv2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://zephyra-control.com/mdv2/</guid><description>&lt;h3 id="30day-summary"&gt;30‑Day Summary&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="30 Day Graph" loading="lazy" src="https://zephyra-control.com/mdv2/images/LPD_1_30_Day.svg"&gt;&lt;/p&gt;
-&lt;h3 id="5day-summary"&gt;5‑Day Summary&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="5 Day Graph" loading="lazy" src="https://zephyra-control.com/mdv2/images/LPD_1_5_Day.svg"&gt;&lt;/p&gt;
-&lt;h3 id="lidar-parameters"&gt;Lidar Parameters&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="30 Day Summary" loading="lazy" src="https://zephyra-control.com/mdv2/images/LPD_1_Lidar_ScanParameters.svg"&gt;&lt;/p&gt;
-&lt;h3 id="zephyra-parameters"&gt;Zephyra Parameters&lt;/h3&gt;
-&lt;p&gt;&lt;img alt="5 Day Summary" loading="lazy" src="https://zephyra-control.com/mdv2/images/LPD_1_Zephyra_Parameters.svg"&gt;&lt;/p&gt;</description></item></channel></rss>
+let html = `&lt;p style="margin-bottom:0.5rem;font-size:0.9em;opacity:0.7;"&gt;${label}&lt;/p&gt;</description></item><item><title>MDV 1</title><link>https://zephyra-control.com/mdv1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://zephyra-control.com/mdv1/</guid><description>&lt;p id="utc-clock" style="font-size:0.9em;opacity:0.6;margin-bottom:2rem;"&gt;&lt;/p&gt;
+&lt;script&gt;
+function updateClock() {
+const now = new Date();
+const hh = String(now.getUTCHours()).padStart(2, '0');
+const mm = String(now.getUTCMinutes()).padStart(2, '0');
+document.getElementById('utc-clock').textContent = `Current Time: ${hh}:${mm} UTC`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+&lt;/script&gt;
+&lt;h2 id="located-on-the-island-of-dhigelaabadhoo-maldives"&gt;Located on the island of Dhigelaabadhoo, Maldives&lt;/h2&gt;
+&lt;h3 id="zephyra-error-log-last-30-days"&gt;Zephyra Error Log (Last 30 Days):&lt;/h3&gt;
+&lt;style&gt;
+#error-log table, #error-log td, #error-log th { border: none; box-shadow: none; }
+#error-log th { text-align: left; padding-right: 2rem; opacity: 0.6; font-size: 0.85em; }
+#error-log td { padding-right: 2rem; vertical-align: top; }
+&lt;/style&gt;
+&lt;div id="error-log" style="margin-bottom:2rem;"&gt;&lt;/div&gt;
+&lt;script&gt;
+function formatTimestamp(ts) {
+const parts = ts.trim().split(' ');
+const dateParts = parts[0].split('-');
+const time = parts[1].substring(0, 5);
+return `${time} ${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+}
+fetch('/data/MDV_1_Combined_Zephyra_Log_Error.csv')
+.then(r =&gt; r.text())
+.then(text =&gt; {
+const lines = text.trim().split('\n');
+const headers = lines[0].replace(/\r/g, '').replace(/"/g, '').split(',');
+const tsIdx = headers.indexOf('timestamp');
+const daysIdx = headers.indexOf('days_ago');
+const descIdx = headers.indexOf('description');
+const rows = lines.slice(1).map(l =&gt; l.replace(/\r/g, '').replace(/"/g, '').split(','));
+const filtered = rows.filter(r =&gt; parseFloat(r[daysIdx]) &lt;= 30);
+const tooMany = filtered.length &gt; 10;
+const recent = tooMany ? filtered.slice(-10) : filtered;
+const display = recent.length &gt; 0 ? recent : [rows[rows.length - 1]];
+const label = recent.length &gt; 0
+? 'Errors (last 30 days)'
+: 'No errors in last 30 days - showing most recent:';
+let html = `&lt;p style="margin-bottom:0.5rem;font-size:0.9em;opacity:0.7;"&gt;${label}&lt;/p&gt;</description></item><item><title>MDV 2</title><link>https://zephyra-control.com/mdv2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://zephyra-control.com/mdv2/</guid><description>&lt;p id="utc-clock" style="font-size:0.9em;opacity:0.6;margin-bottom:2rem;"&gt;&lt;/p&gt;
+&lt;script&gt;
+function updateClock() {
+const now = new Date();
+const hh = String(now.getUTCHours()).padStart(2, '0');
+const mm = String(now.getUTCMinutes()).padStart(2, '0');
+document.getElementById('utc-clock').textContent = `Current Time: ${hh}:${mm} UTC`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+&lt;/script&gt;
+&lt;h2 id="located-on-the-breakwater-at-faresmaathoda-maldives"&gt;Located on the Breakwater at Faresmaathoda, Maldives&lt;/h2&gt;
+&lt;h3 id="zephyra-error-log-last-30-days"&gt;Zephyra Error Log (Last 30 Days):&lt;/h3&gt;
+&lt;style&gt;
+#error-log table, #error-log td, #error-log th { border: none; box-shadow: none; }
+#error-log th { text-align: left; padding-right: 2rem; opacity: 0.6; font-size: 0.85em; }
+#error-log td { padding-right: 2rem; vertical-align: top; }
+&lt;/style&gt;
+&lt;div id="error-log" style="margin-bottom:2rem;"&gt;&lt;/div&gt;
+&lt;script&gt;
+function formatTimestamp(ts) {
+const parts = ts.trim().split(' ');
+const dateParts = parts[0].split('-');
+const time = parts[1].substring(0, 5);
+return `${time} ${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+}
+fetch('/data/MDV_2_Combined_Zephyra_Log_Error.csv')
+.then(r =&gt; r.text())
+.then(text =&gt; {
+const lines = text.trim().split('\n');
+const headers = lines[0].replace(/\r/g, '').replace(/"/g, '').split(',');
+const tsIdx = headers.indexOf('timestamp');
+const daysIdx = headers.indexOf('days_ago');
+const descIdx = headers.indexOf('description');
+const rows = lines.slice(1).map(l =&gt; l.replace(/\r/g, '').replace(/"/g, '').split(','));
+const filtered = rows.filter(r =&gt; parseFloat(r[daysIdx]) &lt;= 30);
+const tooMany = filtered.length &gt; 10;
+const recent = tooMany ? filtered.slice(-10) : filtered;
+const display = recent.length &gt; 0 ? recent : [rows[rows.length - 1]];
+const label = recent.length &gt; 0
+? 'Errors (last 30 days)'
+: 'No errors in last 30 days - showing most recent:';
+let html = `&lt;p style="margin-bottom:0.5rem;font-size:0.9em;opacity:0.7;"&gt;${label}&lt;/p&gt;</description></item></channel></rss>
