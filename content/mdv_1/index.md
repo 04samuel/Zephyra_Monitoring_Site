@@ -65,6 +65,11 @@ document.getElementById('error-log').innerHTML = '<p>Error log unavailable.</p>'
 });
 </script>
 
+### Profile Evolution
+![10 Day Graph](images/MDV_1_10_Day_Profiles.svg)
+
+### Profile Change
+![10 Day Erosion Graph](images/MDV_1_Erosion_Accretion_Heatmap.svg)
 
 ### 30-Day Summary
 ![30 Day Graph](images/MDV_1_30_Day.svg)
