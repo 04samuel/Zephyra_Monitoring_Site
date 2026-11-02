@@ -76,9 +76,9 @@ log_index,timestamp,days_ago,extra_var,description,file_time
 407,2026-09-10 01:53:52,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 16:37:23
 3477,2026-09-10 01:53:52,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 21:11:22
 1400,2026-09-10 01:53:54,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 17:49:25
-227,2026-09-10 01:53:57,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 21:52:50
-524,2026-09-10 01:53:57,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 16:45:30
 2923,2026-09-10 01:53:57,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 20:06:26
+524,2026-09-10 01:53:57,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 16:45:30
+227,2026-09-10 01:53:57,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 21:52:50
 335,2026-09-10 01:53:58,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:01:51
 543,2026-09-10 01:53:58,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:19:52
 639,2026-09-10 01:53:58,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:28:53
@@ -93,20 +93,20 @@ log_index,timestamp,days_ago,extra_var,description,file_time
 535,2026-09-10 01:54:04,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:13:57
 825,2026-09-10 01:54:04,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:23:58
 987,2026-09-10 01:54:05,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 23:04:58
-1111,2026-09-10 01:54:06,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:32:58
-1947,2026-09-10 01:54:06,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:59:59
 1393,2026-09-10 01:54:06,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:41:58
-1671,2026-09-10 01:54:06,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:50:59
+1111,2026-09-10 01:54:06,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:32:58
 1,2026-09-10 01:54:06,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 21:27:36
+1947,2026-09-10 01:54:06,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:59:59
+1671,2026-09-10 01:54:06,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:50:59
 639,2026-09-10 01:54:07,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 16:53:37
 1139,2026-09-10 01:54:07,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 23:23:00
 1209,2026-09-10 01:54:07,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 23:32:01
 2352,2026-09-10 01:54:07,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 19:09:37
 2219,2026-09-10 01:54:08,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 15:09:00
-2751,2026-09-10 01:54:09,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 15:27:01
 2487,2026-09-10 01:54:09,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 15:18:01
-1339,2026-09-10 01:54:09,53.0,50.0,[Logs] Incomplete Event Log,2026-10-06 20:48:12
+2751,2026-09-10 01:54:09,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 15:27:01
 1275,2026-09-10 01:54:09,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 23:41:01
+1339,2026-09-10 01:54:09,53.0,50.0,[Logs] Incomplete Event Log,2026-10-06 20:48:12
 1604,2026-09-10 01:54:10,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 18:05:40
 3271,2026-09-10 01:54:10,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 15:48:39
 3013,2026-09-10 01:54:11,53.0,50.0,[Logs] Incomplete Event Log,2026-09-09 15:36:03
@@ -149,9 +149,10 @@ log_index,timestamp,days_ago,extra_var,description,file_time
 58,2026-10-25 14:09:00,8.0,50.0,[Logs] Incomplete Event Log,2026-10-25 14:12:19
 1275,2026-10-29 09:45:33,4.0,20.0,[Battery] Low Power Mode Activated,2026-10-29 16:26:22
 1419,2026-10-29 20:41:33,4.0,22.0,[Battery] Skipped Event Due To Low Power Mode,2026-10-30 05:11:21
-0,2026-10-29 23:11:00,3.0,51.0,[Logs] Missed HTS Scan,2026-11-02 07:30:58
+0,2026-10-29 23:11:00,3.0,51.0,[Logs] Missed HTS Scan,2026-11-02 07:46:02
 1565,2026-10-30 08:04:32,3.0,22.0,[Battery] Skipped Event Due To Low Power Mode,2026-10-30 17:05:24
-0,2026-10-30 10:34:00,2.0,51.0,[Logs] Missed HTS Scan,2026-11-02 07:30:58
+0,2026-10-30 10:34:00,2.0,51.0,[Logs] Missed HTS Scan,2026-11-02 07:46:02
 1735,2026-10-30 21:20:40,3.0,22.0,[Battery] Skipped Event Due To Low Power Mode,2026-10-31 05:53:21
-0,2026-10-30 23:50:00,2.0,51.0,[Logs] Missed HTS Scan,2026-11-02 07:30:58
+0,2026-10-30 23:50:00,2.0,51.0,[Logs] Missed HTS Scan,2026-11-02 07:46:02
 1849,2026-10-31 06:08:32,2.0,21.0,[Battery] Low Power Mode Deactivated,2026-10-31 08:45:21
+0,2026-11-02 07:43:00,0.0,52.0,[Logs] Missed LTS Scan,2026-11-02 07:46:02
