@@ -1,0 +1,12 @@
+{{- /* Stat card. Expects dict: label, value; optional: tag, bar (0-100), dot (colour), mono (bool), wide (bool) */ -}}
+<div style="{{ if .wide }}grid-column: span 2; min-width: 0; {{ end }}border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; background: #ffffff">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><span style="font-size: 13px; color: #52525b">{{ .label }}</span>{{ with .tag }}<span style="font-size: 11px; border: 1px solid #e5e5e5; border-radius: 6px; padding: 2px 6px; color: #52525b">{{ . }}</span>{{ end }}</div>
+{{- if .mono }}
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 500; overflow-wrap: anywhere">{{ .value }}</div>
+{{- else }}
+<div style="display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 600; letter-spacing: -0.02em">{{ with .dot }}<span style="width: 10px; height: 10px; border-radius: 50%; background: {{ . | safeCSS }}"></span>{{ end }}{{ .value }}</div>
+{{- end }}
+{{- with .bar }}
+<div style="height: 6px; border-radius: 3px; background: #f4f4f5; overflow: hidden"><div style="width: {{ . }}%; height: 100%; background: #0a0a0a"></div></div>
+{{- end }}
+</div>

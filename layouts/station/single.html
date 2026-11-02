@@ -1,0 +1,280 @@
+{{- /* Station dashboard. Standalone page (no PaperMod baseof). Data is read at build time from static/data/;
+       Status, sidebar dots and Next event are computed in the browser so they stay correct between rebuilds. */ -}}
+{{- $s := .Params.station -}}
+{{- $zf := printf "static/data/%s_Current_Zephyra_Parameters.json" $s -}}
+{{- $lf := printf "static/data/%s_Current_Lidar_Parameters.json" $s -}}
+{{- $z := cond (fileExists $zf) (os.ReadFile $zf | transform.Unmarshal) dict -}}
+{{- $l := cond (fileExists $lf) (os.ReadFile $lf | transform.Unmarshal) dict -}}
+{{- $updated := partial "station-updated.html" $s -}}
+{{- $card := "border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; background: #ffffff" -}}
+{{- $big := "font-size: 26px; font-weight: 600; letter-spacing: -0.02em" -}}
+{{- $sub := "font-size: 13px; color: #71717a" -}}
+{{- $mono := "font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #71717a" -}}
+{{- $link := "display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; font-size: 14px" -}}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ .Title }} · {{ site.Title }}</title>
+<link rel="icon" type="image/svg+xml" href="/images/Zephyra_Icon_Grey.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#ffffff}
+a{color:#3f3f46;text-decoration:none}a:hover{color:#0a0a0a}
+main>*{width:100%;max-width:960px;box-sizing:border-box}
+.tab[aria-pressed="true"]{background:#f4f4f5;color:#0a0a0a;font-weight:500}
+.tab[aria-pressed="false"]{background:#ffffff;color:#52525b}
+img[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0a0a0a; background: #ffffff; min-height: 100vh; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<aside style="flex: 1 1 240px; max-width: 100%; background: #fafafa; border-right: 1px solid #e5e5e5; box-sizing: border-box; padding: 20px 14px; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; justify-content: center; padding: 4px 8px">
+<img src="/images/Zephyra_Icon_Logo_Grey.svg" alt="Zephyra" style="width: 160px; height: auto; display: block">
+</div>
+
+<nav aria-label="Stations" style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 12px; color: #71717a; padding: 0 10px 6px">Stations</span>
+{{- $stations := (where site.RegularPages "Type" "station").ByTitle }}
+{{- $lpd := where $stations "Params.station" "like" "^LPD" }}
+{{- range slice (complement $lpd $stations) $lpd }}{{ range . }}
+<a href="{{ .RelPermalink }}"{{ if eq . $ }} aria-current="page"{{ end }} style="{{ $link | safeCSS }}{{ if eq . $ }}; background: #ececee; color: #0a0a0a; font-weight: 500{{ end }}"><span class="st-dot" data-updated="{{ partial "station-updated.html" .Params.station }}" style="width: 8px; height: 8px; border-radius: 50%; background: #a1a1aa"></span>{{ .Title }}</a>
+{{- end }}{{ end }}
+</nav>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 40px 28px 64px; display: flex; flex-direction: column; align-items: center; gap: 32px">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid #e5e5e5">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px">
+<h1 style="margin: 0; line-height: 0"><img src="/images/zephyra_control.svg" alt="Zephyra Control" style="height: 44px; max-width: 100%; width: auto; display: block"></h1>
+<span style="font-size: 13px; color: #52525b; border: 1px solid #e5e5e5; border-radius: 999px; padding: 4px 10px; font-family: 'JetBrains Mono', monospace">{{ $s }}</span>
+</div>
+</header>
+
+<section aria-label="Station overview" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<div style="{{ $card | safeCSS }}">
+<span style="font-size: 13px; color: #52525b">Location</span>
+<div style="{{ $big | safeCSS }}">{{ .Params.location | default "Not set" }}</div>
+{{ with .Params.coords }}<span style="{{ $mono | safeCSS }}">{{ . }}</span>{{ end }}
+</div>
+<div style="{{ $card | safeCSS }}">
+<span style="font-size: 13px; color: #52525b">Status</span>
+<div style="{{ $big | safeCSS }}; display: flex; align-items: center; gap: 10px"><span id="st-dot" style="width: 10px; height: 10px; border-radius: 50%; background: #a1a1aa; flex: none"></span><span id="st-text">Unknown</span></div>
+<span id="st-sub" style="{{ $sub | safeCSS }}">Offline after 13 h without an update</span>
+</div>
+<div style="{{ $card | safeCSS }}">
+<span style="font-size: 13px; color: #52525b">Last update</span>
+{{- if $updated }}
+<div style="{{ $big | safeCSS }}">{{ substr $updated 11 5 }} UTC</div>
+<span style="{{ $mono | safeCSS }}">{{ substr $updated 8 2 }}-{{ substr $updated 5 2 }}-{{ substr $updated 0 4 }} {{ substr $updated 11 8 }}</span>
+{{- else }}
+<div style="{{ $big | safeCSS }}">—</div>
+{{- end }}
+</div>
+</section>
+
+<section aria-label="Next event" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px">
+<div style="{{ $card | safeCSS }}">
+<span style="font-size: 13px; color: #52525b">Next event</span>
+<div id="ne-type" style="{{ $big | safeCSS }}">—</div>
+<span id="ne-sub" style="{{ $sub | safeCSS }}">Loading schedule…</span>
+</div>
+<div style="{{ $card | safeCSS }}">
+<span style="font-size: 13px; color: #52525b">Event time</span>
+<div id="ne-time" style="{{ $big | safeCSS }}">—</div>
+<span id="ne-date" style="{{ $mono | safeCSS }}"></span>
+</div>
+<div style="{{ $card | safeCSS }}">
+<span style="font-size: 13px; color: #52525b">Time until</span>
+<div id="ne-until" style="{{ $big | safeCSS }}; font-variant-numeric: tabular-nums">—</div>
+<span id="ne-after" style="{{ $sub | safeCSS }}"></span>
+</div>
+</section>
+
+{{ partial "plot-card.html" (dict "page" . "file" (printf "%s_10_Day_Profiles.svg" $s) "id" "bp-h" "title" "Beach Profile" "alt" "Beach profile evolution: elevation against cross-shore distance, coloured by date") }}
+{{ partial "plot-card.html" (dict "page" . "file" (printf "%s_Erosion_Accretion_Heatmap.svg" $s) "id" "pc-h" "title" "Profile Change" "alt" "Profile change: ERA5 wave conditions, tide, and elevation change by cross-shore distance and date") }}
+
+{{- $d30 := .Resources.Get (printf "images/%s_30_Day.svg" $s) }}
+{{- $d5 := .Resources.Get (printf "images/%s_5_Day.svg" $s) }}
+{{- if or $d30 $d5 }}
+<section aria-labelledby="pw-h" style="border: 1px solid #e5e5e5; border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 id="pw-h" style="margin: 0; font-size: 16px; font-weight: 600">Summary</h2>
+{{ with partial "svg-date.html" (or $d30 $d5) }}<span style="{{ $sub | safeCSS }}">Last updated {{ . }}</span>{{ end }}
+</div>
+{{- if and $d30 $d5 }}
+<div role="group" aria-label="Summary view" style="display: flex; border: 1px solid #e5e5e5; border-radius: 9px; overflow: hidden">
+<button type="button" class="tab" data-tab="30" aria-pressed="true" style="font: inherit; font-size: 13px; padding: 10px 14px; min-height: 40px; border: 0; cursor: pointer">30-Day Summary</button>
+<button type="button" class="tab" data-tab="5" aria-pressed="false" style="font: inherit; font-size: 13px; padding: 10px 14px; min-height: 40px; border: 0; cursor: pointer">5-Day Summary</button>
+</div>
+{{- end }}
+</div>
+{{ with $d30 }}<img data-panel="30" src="{{ .RelPermalink }}" alt="30-day summary: battery, voltage, stop and start zones, and water level with event windows" style="width: 100%; height: auto; display: block; border-radius: 8px">{{ end }}
+{{ with $d5 }}<img data-panel="5"{{ if $d30 }} hidden{{ end }} src="{{ .RelPermalink }}" alt="5-day summary: battery, voltage, and water level with lidar scans and event windows" style="width: 100%; height: auto; display: block; border-radius: 8px">{{ end }}
+</section>
+{{- end }}
+
+{{- with $z }}
+<section aria-labelledby="cfg-h" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 id="cfg-h" style="margin: 0; font-size: 16px; font-weight: 600">Station configuration</h2>
+<span style="font-size: 12px; color: #71717a">Updated {{ .timestamp }} UTC</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px">
+{{ partial "stat-card.html" (dict "label" "All Event Time Adjustment" "tag" "Time" "value" (printf "%v min" (div .AllEventTimeAdjustmentSec 60))) }}
+{{ partial "stat-card.html" (dict "label" "LTS Time Adjustment" "tag" "Time" "value" (printf "%v min" (div .Event0TimeAdjustmentSec 60))) }}
+{{ partial "stat-card.html" (dict "label" "HTS Time Adjustment" "tag" "Time" "value" (printf "%v min" (div .Event1TimeAdjustmentSec 60))) }}
+{{ partial "stat-card.html" (dict "label" "Time Set Duration" "tag" "Time" "value" (printf "%v min" (div .Event2WaitTime 60))) }}
+{{ partial "stat-card.html" (dict "label" "LTS Duration" "tag" "Sampling" "value" (printf "%v min" (div .Event0WaitTime 60))) }}
+{{ partial "stat-card.html" (dict "label" "HTS Duration" "tag" "Sampling" "value" (printf "%v min" (div .Event1WaitTime 60))) }}
+{{ partial "stat-card.html" (dict "label" "Battery Stop Limit" "tag" "Battery" "value" (printf "%v%%" .BatteryLimitStop) "bar" .BatteryLimitStop) }}
+{{ partial "stat-card.html" (dict "label" "Battery Start Limit" "tag" "Battery" "value" (printf "%v%%" .BatteryLimitStart) "bar" .BatteryLimitStart) }}
+{{ $on := eq (float .BatteryLimitSwitch) 1.0 }}
+{{ partial "stat-card.html" (dict "label" "Battery Saver Switch" "tag" "Battery" "value" (cond $on "On" "Off") "dot" (cond $on "#16a34a" "#a1a1aa")) }}
+</div>
+</section>
+{{- end }}
+
+{{- with $l }}
+<section aria-labelledby="sch-h" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 id="sch-h" style="margin: 0; font-size: 16px; font-weight: 600">Event schedule</h2>
+<span style="font-size: 12px; color: #71717a">Updated {{ .timestamp }} UTC</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px">
+{{ partial "stat-card.html" (dict "label" "Timezone" "value" .Timezone) }}
+{{ partial "stat-card.html" (dict "label" "Frequency" "value" (printf "%v Hz" .Frequency)) }}
+{{ partial "stat-card.html" (dict "label" "HTS Count" "value" .HTS_num) }}
+{{ partial "stat-card.html" (dict "label" "HTS Length" "value" (printf "%v hours" .HTS_len_hours)) }}
+{{ partial "stat-card.html" (dict "label" "HTS Total Hours" "value" (printf "%v hours" .HTS_total_hours)) }}
+{{ partial "stat-card.html" (dict "label" "LTS Short Length" "value" (printf "%v seconds" .LTS_short_len_seconds)) }}
+{{ partial "stat-card.html" (dict "label" "LTS Long Length" "value" (printf "%v min" .LTS_long_len_minutes)) }}
+{{ with .Event_File }}{{ partial "stat-card.html" (dict "label" "Event File" "tag" "CSV" "value" (path.Base .) "mono" true "wide" true) }}{{ end }}
+</div>
+</section>
+{{- end }}
+
+{{ partial "plot-card.html" (dict "page" . "file" (printf "%s_Tide_Examples.svg" $s) "id" "te-h" "title" "Tide Examples" "alt" "Example tide windows: spring and neap tide cycles with high and low tide times, mean level, trigger offsets, HTS and LTS event windows, and lidar scans") }}
+
+{{- $ef := printf "static/data/%s_Combined_Zephyra_Log_Error.csv" $s }}
+{{- if fileExists $ef }}
+{{- $rows := slice }}
+{{- range after 1 (os.ReadFile $ef | transform.Unmarshal) }}
+  {{- if ge (len .) 5 }}
+    {{- $desc := index . 4 }}
+    {{- $src := "" }}
+    {{- with findRESubmatch `^\[([^\]]+)\]\s*(.*)$` $desc 1 }}{{ $src = index (index . 0) 1 }}{{ $desc = index (index . 0) 2 }}{{ end }}
+    {{- $ts := index . 1 }}
+    {{- $rows = $rows | append (dict "days" (float (index . 2)) "src" $src "desc" $desc "ts" (printf "%s %s-%s-%s" (substr $ts 11 5) (substr $ts 8 2) (substr $ts 5 2) (substr $ts 0 4))) }}
+  {{- end }}
+{{- end }}
+{{- $recent := where $rows "days" "le" 30.0 }}
+{{- $show := cond (gt (len $recent) 0) (last 10 $recent) (last 1 $rows) }}
+<section aria-labelledby="log-h" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<h2 id="log-h" style="margin: 0; font-size: 16px; font-weight: 600">Error log</h2>
+<span style="font-size: 12px; background: #f4f4f5; border-radius: 999px; padding: 2px 8px; color: #3f3f46">Last 30 days</span>
+</div>
+{{- if not $recent }}<span style="{{ $sub | safeCSS }}">No errors in the last 30 days — showing the most recent.</span>{{ end }}
+<div style="border: 1px solid #e5e5e5; border-radius: 12px; overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px">
+<thead>
+<tr style="background: #fafafa; text-align: left">
+<th scope="col" style="padding: 12px 16px; font-weight: 500; color: #52525b; font-size: 13px; width: 100px">Days ago</th>
+<th scope="col" style="padding: 12px 16px; font-weight: 500; color: #52525b; font-size: 13px; width: 110px">Source</th>
+<th scope="col" style="padding: 12px 16px; font-weight: 500; color: #52525b; font-size: 13px">Description</th>
+<th scope="col" style="padding: 12px 16px; font-weight: 500; color: #52525b; font-size: 13px; width: 170px">Timestamp (UTC)</th>
+</tr>
+</thead>
+<tbody>
+{{- range $show }}
+<tr style="border-top: 1px solid #e5e5e5"><td style="padding: 12px 16px">{{ math.Round .days }}</td><td style="padding: 12px 16px">{{ with .src }}<span style="font-size: 12px; border-radius: 6px; padding: 2px 7px; {{ if eq . "Battery" }}border: 1px solid #f5c27a; background: #fff7ed; color: #9a3412{{ else }}border: 1px solid #e5e5e5; color: #3f3f46{{ end }}">{{ . }}</span>{{ end }}</td><td style="padding: 12px 16px">{{ .desc }}</td><td style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 13px">{{ .ts }}</td></tr>
+{{- end }}
+</tbody>
+</table>
+</div>
+{{- if gt (len $recent) 10 }}
+<span style="{{ $sub | safeCSS }}">{{ len $recent }} errors in the last 30 days — showing the latest 10. See the log file for the rest.</span>
+{{- end }}
+</section>
+{{- end }}
+
+</main>
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(function (b) {
+  b.addEventListener('click', function () {
+    document.querySelectorAll('.tab').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    document.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.dataset.panel !== b.dataset.tab; });
+  });
+});
+
+var OFFLINE_AFTER_MS = 13 * 3600 * 1000;
+var STATION = {{ $s }};
+var UPDATED = {{ $updated }};
+// Trigger time = schedule time + all-event adjustment + per-event adjustment (seconds)
+var ADJUST = { all: {{ $z.AllEventTimeAdjustmentSec | default 0 }}, 0: {{ $z.Event0TimeAdjustmentSec | default 0 }}, 1: {{ $z.Event1TimeAdjustmentSec | default 0 }} };
+
+function isOnline(iso) { return iso && (Date.now() - new Date(iso)) <= OFFLINE_AFTER_MS; }
+
+// Status box and sidebar dots
+document.querySelectorAll('.st-dot').forEach(function (d) {
+  if (d.dataset.updated) d.style.background = isOnline(d.dataset.updated) ? '#16a34a' : '#dc2626';
+});
+(function () {
+  var on = isOnline(UPDATED);
+  document.getElementById('st-dot').style.background = !UPDATED ? '#a1a1aa' : on ? '#16a34a' : '#dc2626';
+  document.getElementById('st-text').textContent = !UPDATED ? 'Unknown' : on ? 'Online' : 'Offline';
+  if (UPDATED) {
+    var h = Math.floor((Date.now() - new Date(UPDATED)) / 3600000);
+    document.getElementById('st-sub').textContent = on ? 'Reporting normally' : 'No update for ' + (h >= 48 ? Math.floor(h / 24) + ' days' : h + ' h');
+  }
+})();
+
+// Next event, from the station's schedule (day,month,year,hour,minute,second,extraVar; 0 = LTS, 1 = HTS)
+function pad(n) { return String(n).padStart(2, '0'); }
+function hm(d) { return pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()); }
+function typeName(t) { return t === 1 ? 'HTS' : 'LTS'; }
+var events = [];
+
+function showNextEvent() {
+  var now = new Date();
+  var i = events.findIndex(function (e) { return e.t > now; });
+  if (i === -1) {
+    document.getElementById('ne-sub').textContent = events.length ? 'No upcoming events in schedule' : 'Schedule unavailable';
+    return;
+  }
+  var e = events[i], next = events[i + 1];
+  var s = Math.floor((e.t - now) / 1000), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60);
+  document.getElementById('ne-type').textContent = typeName(e.type);
+  document.getElementById('ne-sub').textContent = 'Event ' + e.type;
+  document.getElementById('ne-time').textContent = hm(e.t) + ' UTC';
+  document.getElementById('ne-date').textContent = pad(e.t.getUTCDate()) + '-' + pad(e.t.getUTCMonth() + 1) + '-' + e.t.getUTCFullYear() + ' ' + hm(e.t) + ':' + pad(e.t.getUTCSeconds());
+  document.getElementById('ne-until').textContent = (h >= 24 ? Math.floor(h / 24) + 'd ' + (h % 24) + 'h ' : h + 'h ') + pad(m) + 'm ' + pad(s % 60) + 's';
+  document.getElementById('ne-after').textContent = next ? 'Then ' + typeName(next.type) + ' at ' + hm(next.t) + ' UTC' : '';
+}
+
+fetch('/data/' + STATION + '_Events.csv')
+  .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+  .then(function (text) {
+    text.trim().split(/\r?\n/).slice(1).forEach(function (line) {
+      var c = line.split(',').map(Number);
+      if (c.length < 7 || isNaN(c[0])) return;
+      var type = c[6];
+      var t = Date.UTC(c[2], c[1] - 1, c[0], c[3], c[4], c[5]) + 1000 * (ADJUST.all + (ADJUST[type] || 0));
+      events.push({ t: new Date(t), type: type });
+    });
+    events.sort(function (a, b) { return a.t - b.t; });
+    showNextEvent();
+    setInterval(showNextEvent, 1000);
+  })
+  .catch(function () { showNextEvent(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{{- /* Newest Current_*_Parameters.json timestamp for station code (.), as ISO UTC "YYYY-MM-DDTHH:MM:SSZ", or "" */ -}}
+{{- $iso := "" -}}
+{{- range slice "Zephyra" "Lidar" -}}
+  {{- $f := printf "static/data/%s_Current_%s_Parameters.json" $ . -}}
+  {{- if fileExists $f -}}
+    {{- with (os.ReadFile $f | transform.Unmarshal).timestamp -}}
+      {{- $p := split . " " -}}
+      {{- $d := split (index $p 0) "-" -}}
+      {{- $t := printf "%s-%s-%sT%sZ" (index $d 2) (index $d 1) (index $d 0) (index $p 1) -}}
+      {{- if gt $t $iso -}}{{- $iso = $t -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $iso -}}

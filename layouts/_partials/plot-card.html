@@ -1,0 +1,10 @@
+{{- /* Plot card; renders nothing if the SVG is missing. Expects dict: page, file, id, title, alt */ -}}
+{{- with .page.Resources.Get (printf "images/%s" .file) -}}
+<section aria-labelledby="{{ $.id }}" style="border: 1px solid #e5e5e5; border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h2 id="{{ $.id }}" style="margin: 0; font-size: 16px; font-weight: 600">{{ $.title }}</h2>
+{{ with partial "svg-date.html" . }}<span style="font-size: 13px; color: #71717a">Last updated {{ . }}</span>{{ end }}
+</div>
+<img src="{{ .RelPermalink }}" alt="{{ $.alt }}" loading="lazy" style="width: 100%; height: auto; display: block; border-radius: 8px">
+</section>
+{{- end -}}
