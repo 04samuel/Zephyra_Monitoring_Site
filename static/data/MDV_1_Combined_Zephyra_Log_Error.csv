@@ -81,8 +81,8 @@ log_index,timestamp,days_ago,extra_var,description,file_time
 227,2026-09-10 01:53:57,62.0,50.0,[Logs] Incomplete Event Log,2026-09-09 21:52:50
 3540,2026-09-10 01:53:58,62.0,50.0,[Logs] Incomplete Event Log,2026-09-09 21:19:28
 639,2026-09-10 01:53:58,62.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:28:53
-543,2026-09-10 01:53:58,62.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:19:52
 335,2026-09-10 01:53:58,62.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:01:51
+543,2026-09-10 01:53:58,62.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:19:52
 441,2026-09-10 01:53:59,62.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:10:52
 731,2026-09-10 01:54:01,62.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:37:54
 2263,2026-09-10 01:54:01,62.0,50.0,[Logs] Incomplete Event Log,2026-09-09 19:01:30
@@ -156,9 +156,8 @@ log_index,timestamp,days_ago,extra_var,description,file_time
 2897,2026-11-03 13:28:34,8.0,22.0,[Battery] Skipped Event Due To Low Power Mode,2026-11-03 21:48:24
 3057,2026-11-04 01:55:34,7.0,22.0,[Battery] Skipped Event Due To Low Power Mode,2026-11-04 11:26:23
 3227,2026-11-04 15:20:34,7.0,22.0,[Battery] Skipped Event Due To Low Power Mode,2026-11-04 23:57:26
-0,2026-11-04 17:50:00,6.0,51.0,[Logs] Missed HTS Scan,2026-11-11 17:45:14
 3379,2026-11-05 03:07:33,6.0,22.0,[Battery] Skipped Event Due To Low Power Mode,2026-11-05 12:28:23
 3389,2026-11-05 03:52:34,6.0,21.0,[Battery] Low Power Mode Deactivated,2026-11-05 12:28:23
-0,2026-11-05 05:37:00,6.0,51.0,[Logs] Missed HTS Scan,2026-11-11 17:45:14
+0,2026-11-05 05:37:00,6.0,51.0,[Logs] Missed HTS Scan,2026-11-11 18:00:42
 62,2026-11-06 01:00:04,5.0,50.0,[Logs] Incomplete Event Log,2026-11-06 01:03:23
-0,2026-11-11 15:31:00,0.0,52.0,[Logs] Missed LTS Scan,2026-11-11 17:45:14
+0,2026-11-11 15:31:00,0.0,52.0,[Logs] Missed LTS Scan,2026-11-11 18:00:42
