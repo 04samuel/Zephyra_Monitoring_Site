@@ -81,8 +81,8 @@ log_index,timestamp,days_ago,extra_var,description,file_time
 2923,2026-09-10 01:53:57,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 20:06:26
 543,2026-09-10 01:53:58,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:19:52
 335,2026-09-10 01:53:58,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:01:51
-3540,2026-09-10 01:53:58,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 21:19:28
 639,2026-09-10 01:53:58,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:28:53
+3540,2026-09-10 01:53:58,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 21:19:28
 441,2026-09-10 01:53:59,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:10:52
 731,2026-09-10 01:54:01,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 22:37:54
 2263,2026-09-10 01:54:01,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 19:01:30
@@ -98,8 +98,8 @@ log_index,timestamp,days_ago,extra_var,description,file_time
 1393,2026-09-10 01:54:06,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:41:58
 1671,2026-09-10 01:54:06,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:50:59
 1947,2026-09-10 01:54:06,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 14:59:59
-639,2026-09-10 01:54:07,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 16:53:37
 1139,2026-09-10 01:54:07,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 23:23:00
+639,2026-09-10 01:54:07,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 16:53:37
 1209,2026-09-10 01:54:07,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 23:32:01
 2352,2026-09-10 01:54:07,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 19:09:37
 2219,2026-09-10 01:54:08,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 15:09:00
@@ -107,8 +107,8 @@ log_index,timestamp,days_ago,extra_var,description,file_time
 1339,2026-09-10 01:54:09,64.0,50.0,[Logs] Incomplete Event Log,2026-10-06 20:48:12
 2487,2026-09-10 01:54:09,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 15:18:01
 2751,2026-09-10 01:54:09,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 15:27:01
-1604,2026-09-10 01:54:10,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 18:05:40
 3271,2026-09-10 01:54:10,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 15:48:39
+1604,2026-09-10 01:54:10,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 18:05:40
 3013,2026-09-10 01:54:11,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 15:36:03
 3071,2026-09-10 01:54:12,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 20:22:41
 60,2026-09-10 01:54:13,64.0,50.0,[Logs] Incomplete Event Log,2026-09-09 21:35:43
@@ -160,4 +160,5 @@ log_index,timestamp,days_ago,extra_var,description,file_time
 3389,2026-11-05 03:52:34,8.0,21.0,[Battery] Low Power Mode Deactivated,2026-11-05 12:28:23
 62,2026-11-06 01:00:04,7.0,50.0,[Logs] Incomplete Event Log,2026-11-06 01:03:23
 2257,2026-11-12 22:13:37,1.0,20.0,[Battery] Low Power Mode Activated,2026-11-13 04:35:26
-0,2026-11-13 04:31:00,0.0,52.0,[Logs] Missed LTS Scan,2026-11-13 10:16:55
+0,2026-11-13 04:31:00,0.0,52.0,[Logs] Missed LTS Scan,2026-11-13 10:31:12
+0,2026-11-13 10:18:00,0.0,51.0,[Logs] Missed HTS Scan,2026-11-13 10:31:12
