@@ -1,14 +1,14 @@
 {
     "station": "OSU_1",
-    "source_log": "OSU_1_2026-11-20__05-53-51_log_launcher.txt",
-    "timestamp": "20-11-2026 05:53:51",
+    "source_log": "OSU_1_2026-11-20__10-54-19_log_launcher.txt",
+    "timestamp": "20-11-2026 10:54:19",
     "AllEventTimeAdjustmentSec": 0.0,
     "Event0TimeAdjustmentSec": 0.0,
     "Event1TimeAdjustmentSec": 0.0,
     "Event0WaitTime": 600.0,
-    "Event1WaitTime": 1200.0,
+    "Event1WaitTime": 9000.0,
     "Event2WaitTime": 600.0,
-    "BatteryLimitStop": 50.0,
-    "BatteryLimitStart": 80.0,
+    "BatteryLimitStop": 40.0,
+    "BatteryLimitStart": 60.0,
     "BatteryLimitSwitch": 1.0
 }
