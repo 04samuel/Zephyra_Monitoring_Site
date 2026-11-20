@@ -41,7 +41,7 @@ img[hidden]{display:none!important}
 <nav aria-label="Stations" style="display: flex; flex-direction: column; gap: 2px">
 <span style="font-size: 12px; color: #71717a; padding: 0 10px 6px">Stations</span>
 {{- $stations := (where site.RegularPages "Type" "station").ByTitle }}
-{{- $lpd := where $stations "Params.station" "like" "^LPD" }}
+{{- $lpd := where $stations "Params.station" "like" "^(LPD|OSU)" }}
 {{- range slice (complement $lpd $stations) $lpd }}{{ range . }}
 <a href="{{ .RelPermalink }}"{{ if eq . $ }} aria-current="page"{{ end }} style="{{ $link | safeCSS }}{{ if eq . $ }}; background: #ececee; color: #0a0a0a; font-weight: 500{{ end }}"><span class="st-dot" data-updated="{{ partial "station-updated.html" .Params.station }}" style="width: 8px; height: 8px; border-radius: 50%; background: #a1a1aa"></span>{{ .Title }}</a>
 {{- end }}{{ end }}
